@@ -1,0 +1,51 @@
+{
+    "templates": [
+        {
+            "content": "<real_world_name>",
+            "weight": 1
+        },
+        {
+            "content": "<fantasy_name> <mountain_range_type>",
+            "weight": 1
+        }
+    ],
+    "tag": "mountain_range_names",
+    "name_lists": [
+        {
+            "tag": "real_world_name",
+            "names": [
+                "Alpes",
+                "Rocky Mountains",
+                "Appalachian Mountains",
+                "Himalaya",
+                "Andes"
+            ],
+            "name": "Real World Names",
+            "markovproperties": null
+        },
+        {
+            "tag": "mountain_range_type",
+            "names": [
+                "Mountains",
+                "Massive"
+            ],
+            "name": "Mountain Range Types",
+            "markovproperties": null
+        },
+        {
+            "tag": "fantasy_name",
+            "names": [
+                "Karpadrian"
+            ],
+            "name": "Fantasy Names",
+            "markovproperties": {
+                "order": 3,
+                "length": [
+                    4,
+                    12
+                ]
+            }
+        }
+    ],
+    "name": "Mountain Range Names"
+}

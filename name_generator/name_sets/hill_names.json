@@ -1,0 +1,38 @@
+{
+    "templates": [
+        {
+            "content": "<fantasy_name> <hill_type>",
+            "weight": 1
+        }
+    ],
+    "tag": "hill_names",
+    "name_lists": [
+        {
+            "tag": "fantasy_name",
+            "names": [
+                "Allirdarioan",
+                "Osil",
+                "Iuskw"
+            ],
+            "name": "Fantasy Names",
+            "markovproperties": {
+                "order": 3,
+                "length": [
+                    4,
+                    12
+                ]
+            }
+        },
+        {
+            "tag": "hill_type",
+            "names": [
+                "Hill",
+                "Flat",
+                "Buckle"
+            ],
+            "name": "Hill Types",
+            "markovproperties": null
+        }
+    ],
+    "name": "Hill Names"
+}

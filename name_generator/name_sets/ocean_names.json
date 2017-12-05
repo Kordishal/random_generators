@@ -1,0 +1,52 @@
+{
+    "templates": [
+        {
+            "content": "<real_world_names>",
+            "weight": 1
+        },
+        {
+            "content": "<fantasy_name> <ocean_type>",
+            "weight": 1
+        }
+    ],
+    "tag": "ocean_names",
+    "name_lists": [
+        {
+            "tag": "fantasy_name",
+            "names": [
+                "Ioldiran"
+            ],
+            "name": "Fantasy Names",
+            "markovproperties": {
+                "order": 3,
+                "length": [
+                    4,
+                    12
+                ]
+            }
+        },
+        {
+            "tag": "real_world_name",
+            "names": [
+                "Atlantic Ocean",
+                "Pacific Ocean",
+                "Mediterraean Sea",
+                "Indian Ocean",
+                "Arctic Ocean",
+                "Southern Ocean"
+            ],
+            "name": "Real World Names",
+            "markovproperties": null
+        },
+        {
+            "tag": "ocean_type",
+            "names": [
+                "Ocean",
+                "Sea"
+            ],
+            "name": "Ocean Types",
+            "markovproperties": null
+        }
+    ],
+    "name": "Ocean Names"
+}

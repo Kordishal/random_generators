@@ -1,0 +1,34 @@
+{
+    "templates": [
+        {
+            "content": "",
+            "weight": 1
+        },
+        {
+            "content": "",
+            "weight": 1
+        }
+    ],
+    "tag": "_template",
+    "name_lists": [
+        {
+            "tag": "",
+            "names": [],
+            "name": "",
+            "markovproperties": {
+                "order": 3,
+                "length": [
+                    4,
+                    12
+                ]
+            }
+        },
+        {
+            "tag": "",
+            "names": [],
+            "name": "",
+            "markovproperties": null
+        }
+    ],
+    "name": ""
+}

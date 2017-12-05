@@ -1,0 +1,23 @@
+{
+    "templates": [
+        {
+            "content": "<building_type>",
+            "weight": 1
+        }
+    ],
+    "tag": "building_names",
+    "name_lists": [
+        {
+            "tag": "building_type",
+            "names": [
+                "House",
+                "Tower",
+                "Temple",
+                "Wall"
+            ],
+            "name": "Building Types",
+            "markovproperties": null
+        }
+    ],
+    "name": "Building Names"
+}

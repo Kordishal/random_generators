@@ -1,0 +1,96 @@
+{
+    "templates": [
+        {
+            "content": "<tree_name> <forest_names>",
+            "weight": 1
+        },
+        {
+            "content": "<cardinal_direction> <area_name> <forest_names>",
+            "weight": 1
+        },
+        {
+            "content": "<area_name> <forest_names>",
+            "weight": 1
+        },
+        {
+            "content": "<forest_colour> <forest_names> of <area_name>",
+            "weight": 1
+        },
+        {
+            "content": "<province_name> <forest_names>",
+            "weight": 1
+        },
+        {
+            "content": "<province_name> <tree_name> <forest_names>",
+            "weight": 1
+        },
+        {
+            "content": "<forest_colour> <forest_names> of <province_name>",
+            "weight": 1
+        },
+        {
+            "content": "<forest_atmosphere> <forest_names> of <province_name>",
+            "weight": 1
+        },
+        {
+            "content": "<forest_colour> <forest_names>",
+            "weight": 1
+        },
+        {
+            "content": "<forest_atmosphere> <forest_names>",
+            "weight": 1
+        }
+    ],
+    "tag": "forest_names",
+    "name_lists": [
+        {
+            "tag": "tree_name",
+            "names": [
+                "Birch",
+                "Fir",
+                "Ash",
+                "Larch"
+            ],
+            "name": "Tree Names",
+            "markovproperties": null
+        },
+        {
+            "tag": "forest_colour",
+            "names": [
+                "Green",
+                "Evergreen"
+            ],
+            "name": "Forest Colours",
+            "markovproperties": null
+        },
+        {
+            "tag": "forest_name",
+            "names": [
+                "Woods",
+                "Woodlands",
+                "Forest",
+                "Thicket",
+                "Wilds",
+                "Grove",
+                "Covert"
+            ],
+            "name": "Forest Names",
+            "markovproperties": null
+        },
+        {
+            "tag": "forest_athmosphere",
+            "names": [
+                "Dark",
+                "Light",
+                "Rainy",
+                "Silent",
+                "Creepy",
+                "Thick",
+                "Vast"
+            ],
+            "name": "Forest Athmosphere",
+            "markovproperties": null
+        }
+    ],
+    "name": "Forest Names"
+}

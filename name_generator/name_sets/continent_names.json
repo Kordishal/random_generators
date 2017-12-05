@@ -1,0 +1,32 @@
+{
+    "templates": [
+        {
+            "content": "<real_world>",
+            "weight": 1
+        }
+    ],
+    "tag": "continent_names",
+    "name_lists": [
+        {
+            "tag": "",
+            "names": [
+                "Africa",
+                "Asia",
+                "North America",
+                "South America",
+                "Antarctica",
+                "Australia",
+                "Europe"
+            ],
+            "name": "",
+            "markovproperties": {
+                "order": 1,
+                "length": [
+                    4,
+                    6
+                ]
+            }
+        }
+    ],
+    "name": "Continent Names"
+}
