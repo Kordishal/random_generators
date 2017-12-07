@@ -1,18 +1,18 @@
 {
     "templates": [
         {
-            "content": "<fantasy_name>",
+            "content": "<mountains:fantasy>",
             "weight": 1
         },
         {
-            "content": "<fantasy_name> <mountain_name>",
+            "content": "<mountains:fantasy> <mountains:type>",
             "weight": 1
         }
     ],
-    "tag": "mountain_names",
+    "tag": "mountains",
     "name_lists": [
         {
-            "tag": "fantasy_name",
+            "tag": "fantasy",
             "names": [
                 "Kirlaron",
                 "Qess",
@@ -44,11 +44,16 @@
             }
         },
         {
-            "tag": "mountain_type",
+            "tag": "type",
             "names": [
                 "Mountain",
                 "Massiv",
-                "Peek"
+                "Peek",
+                "Ridge",
+                "Sierra",
+                "Volcano",
+                "Alp",
+                "Mount"
             ],
             "name": "Mountain Types",
             "markovproperties": null

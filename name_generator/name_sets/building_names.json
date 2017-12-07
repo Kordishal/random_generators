@@ -1,11 +1,11 @@
 {
     "templates": [
         {
-            "content": "<building_type>",
+            "content": "<building:building_type>",
             "weight": 1
         }
     ],
-    "tag": "building_names",
+    "tag": "building",
     "name_lists": [
         {
             "tag": "building_type",

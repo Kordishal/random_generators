@@ -1,15 +1,19 @@
 {
     "templates": [
         {
-            "content": "<fantasy_name> <lake_type>",
-            "weight": 1
+            "content": "<lakes:fantasy_name> <lakes:discriptor>",
+            "weight": 50
         },
         {
-            "content": "<real_world_name>",
-            "weight": 1
+            "content": "<lakes:discriptor> <lakes:fantasy_name>",
+            "weight": 50
+        },
+        {
+            "content": "<lakes:full_real_world_names>",
+            "weight": 10
         }
     ],
-    "tag": "lake_names",
+    "tag": "lakes",
     "name_lists": [
         {
             "tag": "fantasy_name",
@@ -26,7 +30,8 @@
             }
         },
         {
-            "tag": "real_world_name",
+            "tag": "full_real_world_names",
+            "language": "en",
             "names": [
                 "Titicaca Lake",
                 "Lake Victoria"
@@ -35,7 +40,7 @@
             "markovproperties": null
         },
         {
-            "tag": "lake_type",
+            "tag": "discriptor",
             "names": [
                 "Lake"
             ],
@@ -43,5 +48,5 @@
             "markovproperties": null
         }
     ],
-    "name": "Lake Names"
+    "name": "Names for Lakes"
 }

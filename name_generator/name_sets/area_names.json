@@ -1,18 +1,18 @@
 {
     "templates": [
         {
-            "content": "<irish_place_names>",
+            "content": "<area:town_names_irish>",
             "weight": 70
         },
         {
-            "content": "<cardinal_direction> <irish_place_names>",
+            "content": "<positional_arguments:cardinal_adjectives> <area:town_names_irish>",
             "weight": 5
         }
     ],
-    "tag": "area_names",
+    "tag": "area",
     "name_lists": [
         {
-            "tag": "irish_place_name",
+            "tag": "town_names_irish",
             "names": [
                 "Aghalee",
                 "Aughagower",
@@ -134,6 +134,7 @@
                 "Urlar",
                 "Ballyveagh"
             ],
+            "weight": 100,
             "name": "Irish Place Names",
             "markovproperties": {
                 "order": 3,
@@ -142,18 +143,6 @@
                     12
                 ]
             }
-        },
-        {
-            "tag": "cardinal_direction",
-            "names": [
-                "Western",
-                "Southern",
-                "Northern",
-                "Eastern",
-                "Central"
-            ],
-            "name": "Cardinal Directions",
-            "markovproperties": null
         }
     ],
     "name": "Area Names"

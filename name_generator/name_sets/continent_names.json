@@ -5,10 +5,10 @@
             "weight": 1
         }
     ],
-    "tag": "continent_names",
+    "tag": "continent",
     "name_lists": [
         {
-            "tag": "",
+            "tag": "real_world",
             "names": [
                 "Africa",
                 "Asia",

@@ -1,18 +1,18 @@
 {
     "templates": [
         {
-            "content": "<cave_name> <cave_type>",
+            "content": "<cave:cave_adjectives_english> <cave:cave_type>",
             "weight": 50
         },
         {
-            "content": "<planet_name> <cave_type>",
+            "content": "<cave:planets> <cave:cave_type>",
             "weight": 50
         }
     ],
-    "tag": "cave_names",
+    "tag": "cave",
     "name_lists": [
         {
-            "tag": "planet_name",
+            "tag": "planets",
             "names": [
                 "Adrastea",
                 "Aegaeon",
@@ -193,7 +193,7 @@
             }
         },
         {
-            "tag": "cave_name",
+            "tag": "cave_adjectives_english",
             "names": [
                 "Calm",
                 "Silent",
