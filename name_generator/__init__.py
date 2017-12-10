@@ -10,29 +10,23 @@ class NameGeneration:
         self.name_sets = list()
         self.name_set_dict = dict()
         self.current_name_set_tag = ''
-        self.path = ''
-        self.valid_path = False
 
         self.all_tags = []
 
         self.random = random.Random(seed)
 
-    def set_path(self, path: str):
-        # raise a type error if path is not a string or None.
+
+    def load(self, path: str):
+        """
+        Load all name sets found in @self.path
+        :return:
+        """
         if not isinstance(path, str) and not path:
             print('This is not a valid path name: ' + str(path))
             return -1
         if not os.path.exists(path):
             raise IOError('Path ' + path + ' does not exist.')
 
-        self.path = path
-        self.valid_path = True
-
-    def load(self):
-        """
-        Load all name sets found in @self.path
-        :return:
-        """
         for root, dirnames, files in os.walk(self.path):
             for file in files:
                 if not file.startswith('_') and file.endswith('.json'):
