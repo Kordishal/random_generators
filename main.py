@@ -2,10 +2,8 @@ from name_generator import *
 import random
 
 names = NameGeneration()
-names.load_default()
+names.load()
 names.create_name_set_dict()
-# names.make_keys_lowercase()
-# names.write_to_namesets()
 
 tags = names.name_set_tags()
 print(list(tags))

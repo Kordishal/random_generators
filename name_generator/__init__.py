@@ -13,21 +13,41 @@ class NameGeneration:
         self.current_name_set_tag = ''
         self.path = "/home/jonas/PycharmProjects/random_generators/name_generator/name_sets/"
 
+    def load(self):
+        for root, dirnames, files in os.walk(self.path):
+            for file in files:
+                if not file.startswith('_') and file.endswith('.json'):
+                    self.name_sets.append(NameSet(root + file, self.random.randint(0, 10000)))
+        for name_set in self.name_sets:
+            if name_set.is_not_complete:
+                print('[WARNING] The name set "' + name_set.name + '" was removed as it was not complete. (err-msg: ' +
+                      name_set.error_message)
+                self.name_sets.remove(name_set)
+
+    def write(self):
+        for root, dirnames, files in os.walk(self.path):
+            for file in files:
+                if not file.startswith('_') and file.endswith('.json'):
+                    os.remove(root + file)
+        for i in self.name_sets:
+            with open(self.path + i.tag + '.json', 'w') as file:
+                file.write(str(i))
+
     def create_name_set_dict(self):
         for ns in self.name_sets:
-            self.name_set_dict[ns.tag] = ns
+            self.name_set_dict[ns.core.tag] = ns
 
     def name_set_tags(self) -> list:
         for name_set in self.name_sets:
             if name_set.has_templates:
-                yield name_set.tag
+                yield name_set.core.tag
 
     def get_name(self) -> str:
         return self.name_sets[self.random.randrange(len(self.name_sets))].get_name()
 
-    def get_name_from_list(self, name_list: dict) -> str:
-        length = len(name_list['names'])
-        name = name_list['names'][self.random.randrange(length)]
+    def get_name_from_list(self, name_list) -> str:
+        length = len(name_list.names)
+        name = name_list.names[self.random.randrange(length)]
         return name
 
     def get_name_from_template_part(self, template_part: str) -> str:
@@ -62,39 +82,24 @@ class NameGeneration:
             return ''
 
         try:
-            assert name_set.templates is not None
+            assert name_set.core.templates is not None
         except AssertionError:
             print('Nameset with tag "' + name_set_tag + '" does not have templates.')
             return ''
         self.current_name_set_tag = name_set_tag
 
         total_weight = 0
-        for template in name_set.templates:
-            total_weight += template['weight']
+        for template in name_set.core.templates:
+            total_weight += template.weight
 
         chance = self.random.randrange(total_weight)
         prev = 0
         current = 0
-        for template in name_set.templates:
-            current += template['weight']
+        for template in name_set.core.templates:
+            current += template.weight
             if prev <= chance < current:
-                return self.generate_name_from_template(template['content'])
+                return self.generate_name_from_template(template.content)
             prev = current
-
-    def load_default(self):
-        for root, dirnames, files in os.walk(self.path):
-            for file in files:
-                if not file.startswith('_'):
-                    self.name_sets.append(NameSet(root + file, self.random.randint(0, 10000)))
-        for name_set in self.name_sets:
-            if name_set.is_not_complete:
-                print("Removed: " + name_set.name)
-                self.name_sets.remove(name_set)
-
-    def write_to_namesets(self):
-        for i in self.name_sets:
-            with open(self.path + i.tag + '.json', 'w') as file:
-                file.write(str(i))
 
     def make_keys_lowercase(self):
         for name_set in self.name_sets:
