@@ -16,8 +16,6 @@ class InvalidNameSetException(Exception):
         if self.missing_attribute != '':
             if self.missing_attribute == 'content':
                 self.error_message = ''
-            self.error_message = 'One of your templates in file ' + str(file_name.split('/')[-1]) + \
-                             ' has no weight (or it is misspelled...).'
 
         return self.error_message
 
@@ -81,13 +79,28 @@ class NameList(JSONEncoder):
                 raise InvalidNameSetException(attribute=str(ke))
 
 
-class NameSetCore:
+class NameSetCore(JSONEncoder):
 
     def __init__(self):
+        super().__init__(ensure_ascii=False, default=self.default)
         self.tag = ''
         self.name = ''
         self.templates = list()
         self.name_lists = list()
+
+    def default(self, o):
+        templates = list()
+        for template in self.templates:
+            templates.append(template.__dict__)
+        name_lists = list()
+        for name_list in self.name_lists:
+            name_lists.append(name_list.__dict__)
+        return_value = dict()
+        return_value['tag'] = self.tag
+        return_value['name'] = self.name
+        return_value['templates'] = templates
+        return_value['name_lists'] = name_lists
+        return return_value
 
 
 class NameSet:

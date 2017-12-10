@@ -6,14 +6,33 @@ import re
 
 class NameGeneration:
 
-    def __init__(self):
-        self.random = random.Random(109287)
+    def __init__(self, seed):
         self.name_sets = list()
         self.name_set_dict = dict()
         self.current_name_set_tag = ''
-        self.path = "/home/jonas/PycharmProjects/random_generators/name_generator/name_sets/"
+        self.path = ''
+        self.valid_path = False
+
+        self.all_tags = []
+
+        self.random = random.Random(seed)
+
+    def set_path(self, path: str):
+        # raise a type error if path is not a string or None.
+        if not isinstance(path, str) and not path:
+            print('This is not a valid path name: ' + str(path))
+            return -1
+        if not os.path.exists(path):
+            raise IOError('Path ' + path + ' does not exist.')
+
+        self.path = path
+        self.valid_path = True
 
     def load(self):
+        """
+        Load all name sets found in @self.path
+        :return:
+        """
         for root, dirnames, files in os.walk(self.path):
             for file in files:
                 if not file.startswith('_') and file.endswith('.json'):
@@ -23,6 +42,9 @@ class NameGeneration:
                 print('[WARNING] The name set "' + name_set.name + '" was removed as it was not complete. (err-msg: ' +
                       name_set.error_message)
                 self.name_sets.remove(name_set)
+
+        for name_set in self.name_sets:
+            self.all_tags.append(name_set.tag)
 
     def write(self):
         for root, dirnames, files in os.walk(self.path):
@@ -37,13 +59,11 @@ class NameGeneration:
         for ns in self.name_sets:
             self.name_set_dict[ns.core.tag] = ns
 
-    def name_set_tags(self) -> list:
-        for name_set in self.name_sets:
-            if name_set.has_templates:
-                yield name_set.core.tag
-
     def get_name(self) -> str:
-        return self.name_sets[self.random.randrange(len(self.name_sets))].get_name()
+        if len(self.name_sets) > 0:
+            return self.name_sets[self.random.randrange(len(self.name_sets))].get_name()
+        else:
+            print("No name sets loaded.")
 
     def get_name_from_list(self, name_list) -> str:
         length = len(name_list.names)
@@ -57,7 +77,7 @@ class NameGeneration:
         except ValueError:
             name_set_tag = self.current_name_set_tag
             name_list_tag = template_part
-        for ns in self.name_set_tags():
+        for ns in self.all_tags:
             if ns == name_set_tag:
                 name_set = self.name_set_dict[ns]
                 for nl in name_set.get_name_list_tags():
