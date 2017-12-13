@@ -1,4 +1,5 @@
-from name_generator.name_classes import NameSet
+from name_generator.name_classes import NameSet, InvalidNameListError, InvalidTemplateError, \
+    InvalidValueError, MissingTagError, UnexpectedFieldError, NoNameListError
 import os
 import random
 import re
@@ -38,27 +39,39 @@ class NameGeneration:
             raise OSError('Path ' + path + ' does not exist.')
         self.path = path
 
-    def load(self):
-        """
-        Load all name sets found in path
-        :return:
-        """
+    def load_all(self):
         for root, dirnames, files in os.walk(self.path):
             for file in files:
                 if not file.startswith('_') and file.endswith('.json'):
-                    try:
-                        self.name_sets.append(NameSet(root + file, self.random.randint(0, 10000)))
-                    except json.JSONDecodeError as jde:
-                        print('[WARING] ' + jde.msg + ' in file ' + file)
-                        pass
-        for name_set in self.name_sets:
-            if name_set.is_not_complete:
-                print('[WARNING] The name set "' + name_set.name + '" was removed as it was not complete. (err-msg: ' +
-                      name_set.error_message)
-                self.name_sets.remove(name_set)
+                    self.load_file(root + file)
 
         for name_set in self.name_sets:
             self.all_tags.append(name_set.core.tag)
+
+    def load_file(self, file):
+        """
+        Load all name sets found in self.path. Does not load subdirectories.
+        """
+        try:
+            name_set = NameSet(file, self.random.randint(0, 10000))
+        except json.JSONDecodeError as jde:
+            print('ERROR: ' + jde.msg + ' in file ' + file)
+        except MissingTagError:
+            print('ERROR: The name set in file ' + file + ' is missing its tag.')
+        except InvalidTemplateError as err:
+            print('ERROR: A template in file ' + file + ' is missing ' + err.missing_field)
+        except InvalidNameListError as err:
+            print('ERROR: A name list in file ' + file + ' is missing ' + err.missing_field)
+        except InvalidValueError as err:
+            print('ERROR: The field ' + err.field_name + ' in name set ' + err.name_set +
+                  ' should be type ' + err.expected_type + ', but found ' + err.encountered_type +
+                  '. (VALUE: ' + err.value + ')')
+        except NoNameListError:
+            print('ERROR: The name set in file ' + file + ' has not name lists!')
+        except UnexpectedFieldError as err:
+            print('ERROR: Encountered unexpected field ' + err.field_name + ' in file ' + file + '!')
+        else:
+            self.name_sets.append(name_set)
 
     def write(self):
         for root, dirnames, files in os.walk(self.path):

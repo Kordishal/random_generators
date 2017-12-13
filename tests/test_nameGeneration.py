@@ -23,9 +23,8 @@ class TestNameGeneration(TestCase):
         self.assertIsInstance(ng.name_set_dict, dict)
         self.assertIsInstance(ng.name_sets, list)
 
-    def test_load(self):
-        with self.assertRaises(InvalidNameListError, InvalidValueError, InvalidTemplateError, MissingTagError):
-            self.names.load()
+    def test_load_all(self):
+        self.names.load_all()
         self.assertEqual(len(self.names.name_sets), len(self.names.all_tags))
 
         for sets in self.names.name_sets:

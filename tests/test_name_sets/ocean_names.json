@@ -16,7 +16,7 @@
                 "Ioldiran"
             ],
             "name": "Fantasy Names",
-            "markovproperties": {
+            "use_markov": {
                 "order": 3,
                 "length": [
                     4,
@@ -35,7 +35,7 @@
                 "Southern Ocean"
             ],
             "name": "Real World Names",
-            "markovproperties": null
+            "use_markov": null
         },
         {
             "tag": "ocean_type",
@@ -44,7 +44,7 @@
                 "Sea"
             ],
             "name": "Ocean Types",
-            "markovproperties": null
+            "use_markov": null
         }
     ],
     "name": "Ocean Names"

@@ -2,7 +2,7 @@
     "templates": [
         {
             "weight": 1
-        },
+        }
         {
             "content": "<real_world_name>",
             "weight": "100"

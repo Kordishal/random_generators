@@ -23,7 +23,7 @@
                 "Jiokocix"
             ],
             "name": "World Names",
-            "markovproperties": {
+            "use_markov": {
                 "order": 3,
                 "length": [
                     4,

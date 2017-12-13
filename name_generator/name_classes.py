@@ -9,47 +9,39 @@ class NameSetError(Exception):
 
 
 class MissingTagError(NameSetError):
-
-    def __init__(self, file_name, item_name):
-        self.file_name = file_name
-        self.item_name = item_name
-
-    def __str__(self):
-        return 'ERROR: The ' + self.item_name + ' in file ' + self.file_name + ' does not have a tag defined.'
+    pass
 
 
 class InvalidTemplateError(NameSetError):
 
-    def __init__(self, name_set, missing_field):
-        self.name_set = name_set
+    def __init__(self, missing_field):
         self.missing_field = missing_field
-
-    def __str__(self):
-        return 'ERROR: A template in the name set ' + self.name_set + ' is invalid. You need to add a ' + self.missing_field + ' field.'
 
 
 class InvalidNameListError(NameSetError):
 
-    def __init__(self, name_set, missing_field):
-        self.name_set = name_set
+    def __init__(self, missing_field):
         self.missing_field = missing_field
 
-    def __str__(self):
-        return 'ERROR: A name list in the name set  ' + self.name_set + ' is invalid. You need to add a ' \
-               + self.missing_field + ' field.'
+
+class NoNameListError(NameSetError):
+    pass
 
 
 class InvalidValueError(NameSetError):
 
-    def __init__(self, name_set, field_name, encountered_type, expected_type):
+    def __init__(self, name_set, field_name, encountered_type='', expected_type='', value=''):
         self.name_set = name_set
         self.field_name = field_name
         self.encountered_type = encountered_type
         self.expected_type = expected_type
+        self.value = value
 
-    def __str__(self):
-        return 'ERROR: In name set the field ' + self.field_name + ' was expected to be of type ' \
-               + self.expected_type + ' but is of type ' + self.encountered_type + '.'
+
+class UnexpectedFieldError(NameSetError):
+
+    def __init__(self, field_name):
+        self.field_name = field_name
 
 
 class NameTemplate(JSONEncoder):
@@ -63,7 +55,7 @@ class NameTemplate(JSONEncoder):
         try:
             self.content = template['content']
         except KeyError:
-            raise InvalidTemplateError('', 'content')
+            raise InvalidTemplateError('content')
         else:
             try:
                 assert isinstance(self.content, str)
@@ -88,7 +80,7 @@ class NameTemplate(JSONEncoder):
         try:
             self.weight = template['weight']
         except KeyError:
-            raise InvalidTemplateError('', 'weight[int]')
+            raise InvalidTemplateError('weight[int]')
         else:
             try:
                 assert isinstance(self.weight, int)
@@ -100,34 +92,64 @@ class NameList(JSONEncoder):
 
     def __init__(self, name_list):
         super().__init__(ensure_ascii=False)
-        try:
-            self.name = name_list['name']
-        except KeyError:
-            self.name = ''
-        try:
-            self.tag = name_list['tag']
-        except KeyError:
-            raise NameSetError(attribute='tag')
-        try:
-            self.names = name_list['names']
-        except KeyError:
-            raise NameSetError(attribute='names')
-
-        try:
-            self.weight = name_list['weight']
-        except KeyError:
-            self.weight= 1
-        try:
-            self.use_markov = name_list['use_markov']
-        except KeyError:
-            self.use_markov = False
-        if self.use_markov:
-            try:
+        for key in name_list:
+            if key == 'name':
+                self.name = name_list['name']
+            elif key == 'tag':
+                self.tag = name_list['tag']
+            elif key == 'names':
+                self.names = name_list['names']
+            elif key == 'weight':
+                self.weight = name_list['weight']
+            elif key == 'use_markov':
+                self.use_markov = name_list['use_markov']
+            elif key == 'markov_order':
                 self.markov_order = name_list['markov_order']
+            elif key == 'markov_min_length':
                 self.markov_min_length = name_list['markov_min_length']
+            elif key == 'markov_max_length':
                 self.markov_max_length = name_list['markov_max_length']
-            except KeyError as ke:
-                raise NameSetError(attribute=str(ke))
+            else:
+                raise UnexpectedFieldError(key)
+
+        if not hasattr(self, 'tag'):
+            raise InvalidTemplateError('tag')
+        elif not isinstance(self.tag, str):
+            raise InvalidValueError(str(self.tag), 'tag', encountered_type=str(type(self.tag)),
+                                    expected_type='str', value=str(self.tag))
+        if hasattr(self, 'name'):
+            if not isinstance(self.name, str):
+                raise InvalidValueError(str(self.name), 'name', encountered_type=str(type(self.name)),
+                                        expected_type='str', value=str(self.name))
+        if hasattr(self, 'names'):
+            if not isinstance(self.names, list):
+                raise InvalidNameListError('names')
+            elif len(self.names) == 0:
+                raise InvalidNameListError('names')
+        else:
+            raise InvalidNameListError('names')
+
+        if hasattr(self, 'weight'):
+            if not isinstance(self.weight, int):
+                raise InvalidValueError(str(self.weight), 'weight', encountered_type=str(type(self.weight)),
+                                        expected_type='int', value=str(self.weight))
+        else:
+            raise InvalidNameListError('weight')
+        if hasattr(self, 'use_markov'):
+            if not isinstance(self.use_markov, bool):
+                raise InvalidValueError(str(self.use_markov), 'use_markov', encountered_type=str(type(self.use_markov)),
+                                        expected_type='bool', value=str(self.use_markov))
+            elif self.use_markov:
+                if not isinstance(self.markov_order, int):
+                    raise InvalidValueError(str(self.markov_order), 'markov_order', encountered_type=str(type(self.markov_order)),
+                                            expected_type='int', value=str(self.markov_order))
+                if not isinstance(self.markov_max_length, int):
+                    raise InvalidValueError(str(self.markov_max_length), 'markov_max_length', encountered_type=str(type(self.markov_max_length)),
+                                            expected_type='int', value=str(self.markov_max_length))
+                if not isinstance(self.markov_min_length, int):
+                    raise InvalidValueError(str(self.markov_min_length), 'markov_min_length', encountered_type=str(type(self.markov_min_length)),
+                                            expected_type='int', value=str(self.markov_min_length))
+
 
 
 class NameSetCore(JSONEncoder):
@@ -158,70 +180,66 @@ class NameSet:
     '''
 
     '''
-    def __init__(self, file_name, seed):
+    def __init__(self, file_name: str, seed: int):
         self.core = NameSetCore()
-
         self.random = random.Random(8731 + seed)
-
-        self.is_not_complete = False
-        self.error_message = 'Namelist in file ' + str(file_name.split('/')[-1]) + ' has no {0}!'
-        self.attribute_name = ''
         self.has_templates = False
-        self.name_lists_dict = dict()
+
         self.read_name_set_file(file_name)
 
-    def read_name_set_file(self, file_name: str) -> int:
+        self.name_lists_dict = dict()
+        for nl in self.core.name_lists:
+            self.name_lists_dict[nl.tag] = nl
+
+    def read_name_set_file(self, file_name: str):
         with open(file_name, 'r', encoding='utf-8-sig') as file:
             content = file.read()
             name_set = json.loads(content)
-
-            try:
-                self.core.name = name_set['name']
-            except KeyError:
-                self.core.name = ''
-
-            try:
-                self.core.tag = name_set['tag']
-            except KeyError:
-                self.error_message = 'The name_set in file ' + str(file_name.split('/')[-1]) + ' needs a tag!'
-                print(self.error_message)
-                self.is_not_complete = True
-            try:
-                assert self.core.tag != ''
-            except AssertionError:
-                self.error_message = 'The name_set in file ' + str(file_name.split('/')[-1]) + ' needs a tag which is not empty!'
-                print(self.error_message)
-                self.is_not_complete = True
-
-            try:
-                for template in name_set['templates']:
-                    self.core.templates.append(NameTemplate(template))
-
-                if len(self.core.templates) > 0:
-                    self.has_templates = True
+            for key in name_set:
+                if key == 'name':
+                    self.core.name = name_set['name']
+                elif key == 'tag':
+                    self.core.tag = name_set['tag']
+                elif key == 'templates':
+                    if isinstance(name_set[key], list):
+                        self.core.templates = list()
+                        for item in name_set[key]:
+                            try:
+                                template = NameTemplate(item)
+                            except InvalidTemplateError as err:
+                                raise err
+                            except InvalidValueError as err:
+                                raise err
+                            except UnexpectedFieldError as err:
+                                raise err
+                            else:
+                                self.core.templates.append(template)
+                        if len(self.core.templates) > 0:
+                            self.has_templates = True
+                elif key == 'name_lists':
+                    if isinstance(name_set[key], list):
+                        self.core.name_lists = list()
+                        for item in name_set[key]:
+                            try:
+                                name_list = NameList(item)
+                            except InvalidNameListError as err:
+                                raise err
+                            except InvalidValueError as err:
+                                raise err
+                            except UnexpectedFieldError as err:
+                                raise err
+                            else:
+                                self.core.name_lists.append(name_list)
                 else:
-                    self.has_templates = False
-            except KeyError:
-                self.has_templates = False
-                self.core.templates = None
-            except InvalidTemplateError as invalid_template_error:
-                raise InvalidTemplateError(self.core.tag, invalid_template_error.missing_field)
+                    raise UnexpectedFieldError(key)
 
-            self.core.name_lists = list()
-            try:
-                for name_list in name_set['name_lists']:
-                    self.core.name_lists.append(NameList(name_list))
-            except KeyError:
-                self.error_message = 'Your name_set in file ' + str(file_name.split('/')[-1]) + \
-                                     ' needs at least one name_list!'
-                print(self.error_message)
-                self.is_not_complete = True
-            except NameSetError as inv:
-                raise NameSetError(attribute=str(inv), name_set=self.core.tag)
-
-            self.name_lists_dict = dict()
-            for nl in self.core.name_lists:
-                self.name_lists_dict[nl.tag] = nl
+            if self.core.tag is None or self.core.tag == '':
+                raise MissingTagError()
+            elif not isinstance(self.core.tag, str):
+                raise InvalidValueError(str(self.core.tag), 'tag', encountered_type=str(type(self.core.tag)),
+                                        expected_type='str', value=str(self.core.tag))
+            elif len(self.core.name_lists) == 0:
+                raise NoNameListError()
 
     def get_name(self) -> str:
         length = len(self.core.name_lists)
