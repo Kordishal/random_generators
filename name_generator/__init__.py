@@ -2,35 +2,55 @@ from name_generator.name_classes import NameSet
 import os
 import random
 import re
+import json
 
 
 class NameGeneration:
+    '''
+        Name Generation API:
 
-    def __init__(self, seed):
+         load :
+         store :
+         get name :
+         get name from template :
+         get name from set :
+
+         add name set
+         change name set
+         remove name set
+         add name list
+         change name list
+         remove name list
+         add template
+         change template
+         remove template
+    '''
+
+    def __init__(self, path: str, seed: int):
         self.name_sets = list()
         self.name_set_dict = dict()
         self.current_name_set_tag = ''
-
         self.all_tags = []
-
         self.random = random.Random(seed)
+        if not isinstance(path, str) or not path:
+            raise TypeError('Path must be string not ' + str(type(path)))
+        if not os.path.exists(path):
+            raise OSError('Path ' + path + ' does not exist.')
+        self.path = path
 
-
-    def load(self, path: str):
+    def load(self):
         """
-        Load all name sets found in @self.path
+        Load all name sets found in path
         :return:
         """
-        if not isinstance(path, str) and not path:
-            print('This is not a valid path name: ' + str(path))
-            return -1
-        if not os.path.exists(path):
-            raise IOError('Path ' + path + ' does not exist.')
-
         for root, dirnames, files in os.walk(self.path):
             for file in files:
                 if not file.startswith('_') and file.endswith('.json'):
-                    self.name_sets.append(NameSet(root + file, self.random.randint(0, 10000)))
+                    try:
+                        self.name_sets.append(NameSet(root + file, self.random.randint(0, 10000)))
+                    except json.JSONDecodeError as jde:
+                        print('[WARING] ' + jde.msg + ' in file ' + file)
+                        pass
         for name_set in self.name_sets:
             if name_set.is_not_complete:
                 print('[WARNING] The name set "' + name_set.name + '" was removed as it was not complete. (err-msg: ' +
@@ -38,7 +58,7 @@ class NameGeneration:
                 self.name_sets.remove(name_set)
 
         for name_set in self.name_sets:
-            self.all_tags.append(name_set.tag)
+            self.all_tags.append(name_set.core.tag)
 
     def write(self):
         for root, dirnames, files in os.walk(self.path):

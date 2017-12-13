@@ -3,21 +3,53 @@ import random
 
 from json import JSONEncoder
 
-class InvalidNameSetException(Exception):
 
-    def __init__(self, **kwargs):
-        if 'attribute' in kwargs:
-            self.missing_attribute = kwargs['attribute']
-        self.file_name = ''
-        self.name_set = ''
-        self.error_message = ''
+class NameSetError(Exception):
+    pass
 
-    def __repr__(self):
-        if self.missing_attribute != '':
-            if self.missing_attribute == 'content':
-                self.error_message = ''
 
-        return self.error_message
+class MissingTagError(NameSetError):
+
+    def __init__(self, file_name, item_name):
+        self.file_name = file_name
+        self.item_name = item_name
+
+    def __str__(self):
+        return 'ERROR: The ' + self.item_name + ' in file ' + self.file_name + ' does not have a tag defined.'
+
+
+class InvalidTemplateError(NameSetError):
+
+    def __init__(self, name_set, missing_field):
+        self.name_set = name_set
+        self.missing_field = missing_field
+
+    def __str__(self):
+        return 'ERROR: A template in the name set ' + self.name_set + ' is invalid. You need to add a ' + self.missing_field + ' field.'
+
+
+class InvalidNameListError(NameSetError):
+
+    def __init__(self, name_set, missing_field):
+        self.name_set = name_set
+        self.missing_field = missing_field
+
+    def __str__(self):
+        return 'ERROR: A name list in the name set  ' + self.name_set + ' is invalid. You need to add a ' \
+               + self.missing_field + ' field.'
+
+
+class InvalidValueError(NameSetError):
+
+    def __init__(self, name_set, field_name, encountered_type, expected_type):
+        self.name_set = name_set
+        self.field_name = field_name
+        self.encountered_type = encountered_type
+        self.expected_type = expected_type
+
+    def __str__(self):
+        return 'ERROR: In name set the field ' + self.field_name + ' was expected to be of type ' \
+               + self.expected_type + ' but is of type ' + self.encountered_type + '.'
 
 
 class NameTemplate(JSONEncoder):
@@ -31,18 +63,37 @@ class NameTemplate(JSONEncoder):
         try:
             self.content = template['content']
         except KeyError:
-            raise InvalidNameSetException(attribute='content')
+            raise InvalidTemplateError('', 'content')
+        else:
+            try:
+                assert isinstance(self.content, str)
+            except AssertionError:
+                raise InvalidValueError('', 'content', str(type(self.content)), 'str')
 
         try:
             self.tags = template['tags']
         except KeyError:
             self.tags = None
-
+        else:
+            try:
+                assert isinstance(self.tags, list)
+            except AssertionError:
+                raise InvalidValueError('', 'tags', str(type(self.tags)), 'list')
+            else:
+                for tag in self.tags:
+                    try:
+                        assert isinstance(tag, str)
+                    except AssertionError:
+                        raise InvalidValueError('', 'tag in tags', str(type(self.tags)), 'str')
         try:
             self.weight = template['weight']
         except KeyError:
-            raise InvalidNameSetException(attribute='content')
-
+            raise InvalidTemplateError('', 'weight[int]')
+        else:
+            try:
+                assert isinstance(self.weight, int)
+            except AssertionError:
+                raise InvalidValueError('', 'weight', str(type(self.weight)), 'int')
 
 
 class NameList(JSONEncoder):
@@ -56,11 +107,11 @@ class NameList(JSONEncoder):
         try:
             self.tag = name_list['tag']
         except KeyError:
-            raise InvalidNameSetException(attribute='tag')
+            raise NameSetError(attribute='tag')
         try:
             self.names = name_list['names']
         except KeyError:
-            raise InvalidNameSetException(attribute='names')
+            raise NameSetError(attribute='names')
 
         try:
             self.weight = name_list['weight']
@@ -76,7 +127,7 @@ class NameList(JSONEncoder):
                 self.markov_min_length = name_list['markov_min_length']
                 self.markov_max_length = name_list['markov_max_length']
             except KeyError as ke:
-                raise InvalidNameSetException(attribute=str(ke))
+                raise NameSetError(attribute=str(ke))
 
 
 class NameSetCore(JSONEncoder):
@@ -153,8 +204,8 @@ class NameSet:
             except KeyError:
                 self.has_templates = False
                 self.core.templates = None
-            except InvalidNameSetException as inv:
-                raise InvalidNameSetException(attribute=str(inv), name_set=self.core.tag)
+            except InvalidTemplateError as invalid_template_error:
+                raise InvalidTemplateError(self.core.tag, invalid_template_error.missing_field)
 
             self.core.name_lists = list()
             try:
@@ -165,8 +216,8 @@ class NameSet:
                                      ' needs at least one name_list!'
                 print(self.error_message)
                 self.is_not_complete = True
-            except InvalidNameSetException as inv:
-                raise InvalidNameSetException(attribute=str(inv), name_set=self.core.tag)
+            except NameSetError as inv:
+                raise NameSetError(attribute=str(inv), name_set=self.core.tag)
 
             self.name_lists_dict = dict()
             for nl in self.core.name_lists:

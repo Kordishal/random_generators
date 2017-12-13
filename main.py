@@ -1,8 +1,7 @@
 from name_generator import *
 import random
 
-names = NameGeneration(82139)
-names.set_path('/home/jonas/PycharmProjects/random_generators/name_generator/name_sets/')
+names = NameGeneration('/home/jonas/PycharmProjects/random_generators/name_generator/name_sets/', 82139)
 names.load()
 names.create_name_set_dict()
 

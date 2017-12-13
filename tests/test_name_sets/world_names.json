@@ -1,0 +1,36 @@
+{
+    "templates": [
+        {
+            "content": "<world_name>",
+            "weight": 1
+        }
+    ],
+    "tag": "world_names",
+    "name_lists": [
+        {
+            "names": [
+                "Biorka",
+                "Arkadia",
+                "Orora",
+                "Ugone",
+                "Ewune",
+                "Einush",
+                "Eicica",
+                "Aesios",
+                "Xovrotea",
+                "Klaicizoth",
+                "Ariapeth",
+                "Jiokocix"
+            ],
+            "name": "World Names",
+            "markovproperties": {
+                "order": 3,
+                "length": [
+                    4,
+                    12
+                ]
+            }
+        }
+    ],
+    "name": "World Names"
+}
