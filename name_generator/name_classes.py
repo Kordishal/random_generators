@@ -30,8 +30,7 @@ class NoNameListError(NameSetError):
 
 class InvalidValueError(NameSetError):
 
-    def __init__(self, name_set, field_name, encountered_type='', expected_type='', value=''):
-        self.name_set = name_set
+    def __init__(self, field_name, encountered_type='', expected_type='', value=''):
         self.field_name = field_name
         self.encountered_type = encountered_type
         self.expected_type = expected_type
@@ -48,44 +47,40 @@ class NameTemplate(JSONEncoder):
 
     def __init__(self, template):
         super().__init__(ensure_ascii=False)
-        try:
-            self.name = template['name']
-        except KeyError:
-            self.name = ''
-        try:
-            self.content = template['content']
-        except KeyError:
-            raise InvalidTemplateError('content')
-        else:
-            try:
-                assert isinstance(self.content, str)
-            except AssertionError:
-                raise InvalidValueError('', 'content', str(type(self.content)), 'str')
-
-        try:
-            self.tags = template['tags']
-        except KeyError:
-            self.tags = None
-        else:
-            try:
-                assert isinstance(self.tags, list)
-            except AssertionError:
-                raise InvalidValueError('', 'tags', str(type(self.tags)), 'list')
+        for key in template:
+            if key == 'name':
+                self.name = template['name']
+            elif key == 'content':
+                self.content = template['content']
+            elif key == 'tags':
+                self.tags = template['tags']
+            elif key == 'weight':
+                self.weight = template['weight']
             else:
-                for tag in self.tags:
-                    try:
-                        assert isinstance(tag, str)
-                    except AssertionError:
-                        raise InvalidValueError('', 'tag in tags', str(type(self.tags)), 'str')
-        try:
-            self.weight = template['weight']
-        except KeyError:
-            raise InvalidTemplateError('weight[int]')
+                raise UnexpectedFieldError(key)
+
+        if hasattr(self, 'name'):
+            if not isinstance(self.name, str):
+                raise InvalidValueError('name', encountered_type=str(type(self.name)), expected_type='str')
+
+        if hasattr(self, 'content'):
+            if not isinstance(self.content, str):
+                raise InvalidValueError('content', encountered_type=str(type(self.content)), expected_type='str')
         else:
-            try:
-                assert isinstance(self.weight, int)
-            except AssertionError:
-                raise InvalidValueError('', 'weight', str(type(self.weight)), 'int')
+            raise InvalidTemplateError('content')
+
+        if hasattr(self, 'tags'):
+            if not isinstance(self.tags, list):
+                raise InvalidValueError('tags', encountered_type=str(type(self.tags)), expected_type='list')
+            else:
+                if not len(self.tags) > 0:
+                    raise InvalidTemplateError('tags')
+
+        if hasattr(self, 'weight'):
+            if not isinstance(self.weight, int):
+                raise InvalidValueError('weight', encountered_type=str(type(self.weight)), expected_type='int')
+        else:
+            raise InvalidTemplateError('weight')
 
 
 class NameList(JSONEncoder):
@@ -115,12 +110,12 @@ class NameList(JSONEncoder):
         if not hasattr(self, 'tag'):
             raise InvalidTemplateError('tag')
         elif not isinstance(self.tag, str):
-            raise InvalidValueError(str(self.tag), 'tag', encountered_type=str(type(self.tag)),
-                                    expected_type='str', value=str(self.tag))
+            raise InvalidValueError('tag', encountered_type=str(type(self.tag)),
+                                    expected_type='str')
         if hasattr(self, 'name'):
             if not isinstance(self.name, str):
-                raise InvalidValueError(str(self.name), 'name', encountered_type=str(type(self.name)),
-                                        expected_type='str', value=str(self.name))
+                raise InvalidValueError('name', encountered_type=str(type(self.name)),
+                                        expected_type='str')
         if hasattr(self, 'names'):
             if not isinstance(self.names, list):
                 raise InvalidNameListError('names')
@@ -131,35 +126,30 @@ class NameList(JSONEncoder):
 
         if hasattr(self, 'weight'):
             if not isinstance(self.weight, int):
-                raise InvalidValueError(str(self.weight), 'weight', encountered_type=str(type(self.weight)),
-                                        expected_type='int', value=str(self.weight))
+                raise InvalidValueError('weight', encountered_type=str(type(self.weight)),
+                                        expected_type='int')
         else:
             raise InvalidNameListError('weight')
         if hasattr(self, 'use_markov'):
             if not isinstance(self.use_markov, bool):
-                raise InvalidValueError(str(self.use_markov), 'use_markov', encountered_type=str(type(self.use_markov)),
-                                        expected_type='bool', value=str(self.use_markov))
+                raise InvalidValueError('use_markov', encountered_type=str(type(self.use_markov)),
+                                        expected_type='bool')
             elif self.use_markov:
                 if not isinstance(self.markov_order, int):
-                    raise InvalidValueError(str(self.markov_order), 'markov_order', encountered_type=str(type(self.markov_order)),
-                                            expected_type='int', value=str(self.markov_order))
+                    raise InvalidValueError('markov_order', encountered_type=str(type(self.markov_order)),
+                                            expected_type='int')
                 if not isinstance(self.markov_max_length, int):
-                    raise InvalidValueError(str(self.markov_max_length), 'markov_max_length', encountered_type=str(type(self.markov_max_length)),
-                                            expected_type='int', value=str(self.markov_max_length))
+                    raise InvalidValueError('markov_max_length', encountered_type=str(type(self.markov_max_length)),
+                                            expected_type='int')
                 if not isinstance(self.markov_min_length, int):
-                    raise InvalidValueError(str(self.markov_min_length), 'markov_min_length', encountered_type=str(type(self.markov_min_length)),
-                                            expected_type='int', value=str(self.markov_min_length))
-
+                    raise InvalidValueError('markov_min_length', encountered_type=str(type(self.markov_min_length)),
+                                            expected_type='int')
 
 
 class NameSetCore(JSONEncoder):
 
     def __init__(self):
         super().__init__(ensure_ascii=False, default=self.default)
-        self.tag = ''
-        self.name = ''
-        self.templates = list()
-        self.name_lists = list()
 
     def default(self, o):
         templates = list()
@@ -180,6 +170,7 @@ class NameSet:
     '''
 
     '''
+
     def __init__(self, file_name: str, seed: int):
         self.core = NameSetCore()
         self.random = random.Random(8731 + seed)
@@ -233,12 +224,16 @@ class NameSet:
                 else:
                     raise UnexpectedFieldError(key)
 
-            if self.core.tag is None or self.core.tag == '':
+            if hasattr(self.core, 'tag'):
+                if not isinstance(self.core.tag, str):
+                    raise InvalidValueError('tag', encountered_type=str(type(self.core.tag)), expected_type='str')
+            else:
                 raise MissingTagError()
-            elif not isinstance(self.core.tag, str):
-                raise InvalidValueError(str(self.core.tag), 'tag', encountered_type=str(type(self.core.tag)),
-                                        expected_type='str', value=str(self.core.tag))
-            elif len(self.core.name_lists) == 0:
+
+            if hasattr(self.core, 'name_lists'):
+                if not isinstance(self.core.name_lists, list):
+                    raise InvalidValueError('name_list', encountered_type=str(type(self.core.name_lists)), expected_type='list')
+            else:
                 raise NoNameListError()
 
     def get_name(self) -> str:

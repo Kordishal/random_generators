@@ -1,18 +1,20 @@
 {
+    "tag": "english_names",
     "templates": [
         {
-            "content": "<english_male_first_name> <english_last_name>",
-            "weight": 50
+            "weight": 50,
+            "content": "<english_male_first_name> <english_last_name>"
         },
         {
-            "content": "<english_female_first_name> <english_last_name>",
-            "weight": 50
+            "weight": 50,
+            "content": "<english_female_first_name> <english_last_name>"
         }
     ],
-    "tag": "english_names",
     "name_lists": [
         {
+            "use_markov": true,
             "tag": "english_male_first_name",
+            "markov_order": 3,
             "names": [
                 "Aaron",
                 "Abbott",
@@ -629,17 +631,12 @@
                 "Zane",
                 "Zebediah"
             ],
-            "name": "English Male First Names",
-            "markovproperties": {
-                "order": 1,
-                "length": [
-                    1,
-                    12
-                ]
-            }
+            "name": "English Male First Names"
         },
         {
+            "use_markov": true,
             "tag": "english_female_first_name",
+            "markov_order": 3,
             "names": [
                 "Abigail",
                 "Ada",
@@ -1018,17 +1015,12 @@
                 "Yvonne",
                 "Zelda"
             ],
-            "name": "English Female First Names",
-            "markovproperties": {
-                "order": 1,
-                "length": [
-                    1,
-                    12
-                ]
-            }
+            "name": "English Female First Names"
         },
         {
+            "use_markov": true,
             "tag": "english_last_name",
+            "markov_order": 3,
             "names": [
                 "Abbey",
                 "Abel",
@@ -1734,14 +1726,7 @@
                 "Young",
                 "Yoxall"
             ],
-            "name": "English Last Names",
-            "markovproperties": {
-                "order": 1,
-                "length": [
-                    1,
-                    12
-                ]
-            }
+            "name": "English Last Names"
         }
     ],
     "name": "English Names"

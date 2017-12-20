@@ -2,7 +2,7 @@ from name_generator import *
 import random
 
 names = NameGeneration('/home/jonas/PycharmProjects/random_generators/name_generator/name_sets/', 82139)
-names.load()
+names.load_all()
 names.create_name_set_dict()
 
 tags = names.all_tags
