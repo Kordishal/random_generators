@@ -147,22 +147,34 @@ class NameList(JSONEncoder):
 
 
 class NameSetCore(JSONEncoder):
+    '''
+
+
+    '''
 
     def __init__(self):
+        '''
+
+        '''
         super().__init__(ensure_ascii=False, default=self.default)
 
     def default(self, o):
-        templates = list()
+        '''
+        Prepares class attributes for json encoding.
+        :param o:
+        :return:
+        '''
+        template_dict = list()
         for template in self.templates:
-            templates.append(template.__dict__)
-        name_lists = list()
+            template_dict.append(template.__dict__)
+        name_list_dict = list()
         for name_list in self.name_lists:
-            name_lists.append(name_list.__dict__)
+            name_list_dict.append(name_list.__dict__)
         return_value = dict()
         return_value['tag'] = self.tag
         return_value['name'] = self.name
-        return_value['templates'] = templates
-        return_value['name_lists'] = name_lists
+        return_value['templates'] = template_dict
+        return_value['name_lists'] = name_list_dict
         return return_value
 
 

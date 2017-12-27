@@ -13,7 +13,7 @@ for _ in range(10):
     print(names.get_name())
 print('@@@ TEMPLATE NAMES @@@')
 for _ in range(10):
-    print(names.generate_name_from_template(template="<building:building_type>"))
+    print(names.generate_name_from_template(template="<buildings:building_type>"))
 
 for _ in range(10):
     print(names.generate_name_from_set(name_set_tag='cities'))

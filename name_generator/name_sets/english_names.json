@@ -1,20 +1,7 @@
 {
-    "tag": "english_names",
-    "templates": [
-        {
-            "weight": 50,
-            "content": "<english_male_first_name> <english_last_name>"
-        },
-        {
-            "weight": 50,
-            "content": "<english_female_first_name> <english_last_name>"
-        }
-    ],
+    "name": "English Names",
     "name_lists": [
         {
-            "use_markov": true,
-            "tag": "english_male_first_name",
-            "markov_order": 3,
             "names": [
                 "Aaron",
                 "Abbott",
@@ -631,12 +618,15 @@
                 "Zane",
                 "Zebediah"
             ],
-            "name": "English Male First Names"
+            "weight": 10,
+            "use_markov": true,
+            "markov_order": 3,
+            "markov_min_length": 4,
+            "name": "English Male First Names",
+            "markov_max_length": 12,
+            "tag": "english_male_first_name"
         },
         {
-            "use_markov": true,
-            "tag": "english_female_first_name",
-            "markov_order": 3,
             "names": [
                 "Abigail",
                 "Ada",
@@ -1015,12 +1005,15 @@
                 "Yvonne",
                 "Zelda"
             ],
-            "name": "English Female First Names"
+            "weight": 10,
+            "use_markov": true,
+            "markov_order": 3,
+            "markov_min_length": 4,
+            "name": "English Female First Names",
+            "markov_max_length": 12,
+            "tag": "english_female_first_name"
         },
         {
-            "use_markov": true,
-            "tag": "english_last_name",
-            "markov_order": 3,
             "names": [
                 "Abbey",
                 "Abel",
@@ -1726,8 +1719,24 @@
                 "Young",
                 "Yoxall"
             ],
-            "name": "English Last Names"
+            "weight": 10,
+            "use_markov": true,
+            "markov_order": 3,
+            "markov_min_length": 4,
+            "name": "English Last Names",
+            "markov_max_length": 12,
+            "tag": "english_last_name"
         }
     ],
-    "name": "English Names"
+    "templates": [
+        {
+            "weight": 50,
+            "content": "<english_names:english_male_first_name> <english_names:english_last_name>"
+        },
+        {
+            "weight": 50,
+            "content": "<english_names:english_female_first_name> <english_names:english_last_name>"
+        }
+    ],
+    "tag": "english_names"
 }
