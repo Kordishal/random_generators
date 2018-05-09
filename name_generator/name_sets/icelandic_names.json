@@ -1,5 +1,6 @@
 {
     "name": "Icelandic Names",
+    "id": "icelandic_names",
     "name_lists": [
         {
             "weight": 10,
@@ -7701,6 +7702,5 @@
             "weight": 50,
             "content": "<icelandic_female_first_name> <icelandic_female_last_name>"
         }
-    ],
-    "tag": "icelandic_names"
+    ]
 }

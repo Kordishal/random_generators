@@ -4,7 +4,7 @@ class NameSetError(Exception):
     """Base exception for name sets."""
 
 
-class MissingTagError(NameSetError):
+class MissingIdError(NameSetError):
     """A mandatory field is missing."""
 
 

@@ -1,5 +1,6 @@
 {
     "name": "English Names",
+    "id": "english_names",
     "name_lists": [
         {
             "names": [
@@ -1737,6 +1738,5 @@
             "weight": 50,
             "content": "<english_names:english_female_first_name> <english_names:english_last_name>"
         }
-    ],
-    "tag": "english_names"
+    ]
 }

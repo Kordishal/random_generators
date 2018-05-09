@@ -13,7 +13,8 @@ class NameList:
     :param markov_max_length:
     """
 
-    def __init__(self, name, tag, names, weight, use_markov, markov_order, markov_min_length, markov_max_length):
+    def __init__(self, name: str, tag: str, names: list, weight: int,
+                 use_markov=False, markov_order=0, markov_min_length=0, markov_max_length=0):
         self.name = name
         self.tag = tag
         self.names = names
