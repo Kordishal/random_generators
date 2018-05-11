@@ -30,3 +30,6 @@ class TestNameGeneration(TestCase):
         for sets in self.names.name_sets:
             self.assertFalse(sets.is_not_complete)
 
+    def test_load_file(self):
+        self.names.load_file('./test_name_sets/hill_range_names.json')
+
