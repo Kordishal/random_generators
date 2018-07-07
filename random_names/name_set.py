@@ -1,4 +1,5 @@
-from random_names import NameList, NameTemplate
+from random_names.name_list import NameList
+from random_names.name_template import NameTemplate
 from random_names.utility import read_name_set_file, check_name_set
 import random
 

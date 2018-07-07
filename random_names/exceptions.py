@@ -19,6 +19,7 @@ class InvalidNameListError(NameSetError):
 class NameListMissingError(NameSetError):
     """A name has no list."""
 
+
 # TODO: change this to type error...
 class InvalidValueError(NameSetError):
     """"""

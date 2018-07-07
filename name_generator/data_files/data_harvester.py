@@ -1,49 +1,65 @@
 import json
+from rdflib import Graph, OWL, RDF, RDFS, URIRef, Literal, Namespace
 import csv
 import re
-from name_generator.name_classes import NameSet
+from random_names import NameSet
+
+def lake_dbpadia(file_name):
+
+    with open(file_name, 'r') as file:
+        content = json.loads(file.read())
+
+        DBPEDIA = Namespace('http://dbpedia.org/ontology/')
+        DBPEDIARESOURCE = Namespace('http://dbpedia.org/resource/')
+
+        g = Graph()
+        g.bind('owl', OWL)
+        g.bind('dbo', DBPEDIA)
+        g.bind('dbr', DBPEDIARESOURCE)
+        g.bind('georss', Namespace('http://www.georss.org/georss/'))
+        g.bind('geo', Namespace('http://www.w3.org/2003/01/geo/wgs84_pos#'))
+        g.bind('wikidata', Namespace('http://www.wikidata.org/entity/'))
+        g.bind('schema', Namespace('http://schema.org/'))
+
+        for properties in content['properties']:
+            subject = URIRef(properties['propertyURI'])
+            g.add((subject, RDF.type, RDF.Property))
+
+            label = Literal(properties['propertyLabel'], lang='en')
+            g.add((subject, RDFS.label, label))
+
+            pro_type = URIRef(properties['propertyType'])
+            g.add((subject, RDFS.range, pro_type))
+
+        for instances in content['instances']:
+            print(instances)
+            key = [key for key in instances][0]
+            subject = URIRef(key)
+            g.add((subject, RDF.type, DBPEDIA.Lake))
+
+            for item in instances[key]:
+                print(item)
+                obj = instances[key][item]
+                if not obj == 'NULL':
+                    if isinstance(obj, list):
+                        for el in obj:
+                            print(el)
+                            if el.startswith('http://'):
+                                g.add((subject, URIRef(item), URIRef(el)))
+                            else:
+                                g.add((subject, URIRef(item), Literal(el, lang='en')))
+                    else:
+                        print(obj)
+                        if obj.startswith('http://'):
+                            g.add((subject, URIRef(item), URIRef(obj)))
+                        else:
+                            g.add((subject, URIRef(item), Literal(obj, lang='en')))
+
+        g.serialize('lakes.ttl', format='ttl')
 
 
-class HarvestData:
-
-    def __init__(self):
-        self.names = dict()
-
-    def load_data(self):
-        self.names['lakes'] = list()
-        with open('Lake.csv', 'r') as file:
-            reader = csv.DictReader(file, dialect='unix')
-            count = 0
-            for row in reader:
-                count += 1
-                if count > 3:
-                    if row['rdf-schema#label'] != 'NULL':
-                        self.names['lakes'].append(row['rdf-schema#label'])
-            print(count)
-        print(len(self.names['lakes']))
-
-        self.names['lakes_single'] = list()
-
-        for i in range(len(self.names['lakes'])):
-            self.names['lakes'][i] = re.sub('\(.*?\)', '', self.names['lakes'][i])
-            self.names['lakes'][i] = self.names['lakes'][i].strip()
-            if not self.names['lakes_single'].__contains__(self.names['lakes'][i]):
-                self.names['lakes_single'].append(self.names['lakes'][i])
-
-        self.names['lakes'] = self.names['lakes_single']
-        del self.names['lakes_single']
-
-        with open('lakes.json', 'w', encoding='utf-8') as file:
-            file.write(json.dumps(self.names, indent='    ', ensure_ascii=False))
-
-    def write_data_into_name_set(self, name_set_tag: str, name_list_tag: str):
-        name_set = NameSet(name_set_tag, 1)
-        name_set.add_names_to_namelist(self.names[name_set_tag], name_list_tag)
-
-
-harvester = HarvestData()
-harvester.load_data()
-harvester.write_data_into_name_set('we are many', 'stuff')
+if __name__ == '__main__':
+    lake_dbpadia('Lake.json')
 
 
 
