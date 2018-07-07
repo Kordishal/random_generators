@@ -7695,12 +7695,16 @@
     ],
     "templates": [
         {
+            "name": "icelandic_male_full_name",
             "weight": 50,
-            "content": "<icelandic_male_first_name> <icelandic_male_last_name>"
+            "tags": ["icelandic", "male", "full"],
+            "content": "<icelandic_names:icelandic_male_first_name> <icelandic_names:icelandic_male_last_name>"
         },
         {
+            "name": "icelandic_female_full_name",
             "weight": 50,
-            "content": "<icelandic_female_first_name> <icelandic_female_last_name>"
+            "tags": ["icelandic", "female", "full"],
+            "content": "<icelandic_names:icelandic_female_first_name> <icelandic_names:icelandic_female_last_name>"
         }
     ]
 }

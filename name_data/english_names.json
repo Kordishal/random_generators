@@ -621,10 +621,11 @@
             ],
             "weight": 10,
             "use_markov": true,
-            "markov_order": 3,
-            "markov_min_length": 4,
+            "markov_properties": {
+                "order": 3,
+                "length": [4, 12]
+            },
             "name": "English Male First Names",
-            "markov_max_length": 12,
             "tag": "english_male_first_name"
         },
         {
@@ -1008,10 +1009,11 @@
             ],
             "weight": 10,
             "use_markov": true,
-            "markov_order": 3,
-            "markov_min_length": 4,
+            "markov_properties": {
+                "order": 3,
+                "length": [4, 12]
+            },
             "name": "English Female First Names",
-            "markov_max_length": 12,
             "tag": "english_female_first_name"
         },
         {
@@ -1722,20 +1724,25 @@
             ],
             "weight": 10,
             "use_markov": true,
-            "markov_order": 3,
-            "markov_min_length": 4,
+            "markov_properties": {
+                "order": 3,
+                "length": [4, 12]
+            },
             "name": "English Last Names",
-            "markov_max_length": 12,
             "tag": "english_last_name"
         }
     ],
     "templates": [
         {
+            "name": "english_male_full_name",
             "weight": 50,
+            "tags": ["english", "male", "full"],
             "content": "<english_names:english_male_first_name> <english_names:english_last_name>"
         },
         {
+            "name": "english_female_full_name",
             "weight": 50,
+            "tags": ["english", "female", "full"],
             "content": "<english_names:english_female_first_name> <english_names:english_last_name>"
         }
     ]

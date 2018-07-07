@@ -1,3 +1,4 @@
+import random
 
 
 class NameList:
@@ -8,18 +9,18 @@ class NameList:
     :param names:
     :param weight:
     :param use_markov:
-    :param markov_order:
-    :param markov_min_length:
-    :param markov_max_length:
+    :param markov_properties:
     """
 
-    def __init__(self, name: str, tag: str, names: list, weight: int,
-                 use_markov=False, markov_order=0, markov_min_length=0, markov_max_length=0):
+    def __init__(self, seed: int, name: str, tag: str, names: list, weight: int,
+                 use_markov: bool, markov_properties: dict):
+        self._random = random.Random(seed)
         self.name = name
         self.tag = tag
         self.names = names
         self.weight = weight
         self.use_markov = use_markov
-        self.markov_order = markov_order
-        self.markov_min_length = markov_min_length
-        self.markov_max_length = markov_max_length
+        self.markov_properties = markov_properties
+
+    def get_name(self):
+        return self._random.choice(self.names)
