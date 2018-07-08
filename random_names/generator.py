@@ -4,6 +4,7 @@ import random
 from random_names.name_set import NameSet
 from random_names.exceptions import InvalidTemplateError
 
+
 class NameGenerator(object):
     """
 
@@ -26,8 +27,11 @@ class NameGenerator(object):
         for nameset in self.name_sets:
             for template in self.name_sets[nameset].templates:
                 result[template] = self.name_sets[nameset].templates[template]
-
         return result
+
+    @property
+    def name_sets_as_list(self):
+        return list(self.name_sets.values())
 
     def name_set_ids(self):
         return [nameset.id for nameset in self.name_sets.values()]
@@ -46,22 +50,28 @@ class NameGenerator(object):
         else:
             name_set = self.name_sets[nameset_id]
 
-        template = self._random.choice(list(name_set.templates.values()))
+        template = self._random.choice(name_set.filter_templates(tags))
         return template.expand(self.name_sets)
 
     def select_name_set(self, tags):
+        def _contains(l_name_set: NameSet):
+            templates = l_name_set.templates_as_list
 
-        def _contains(name_set: NameSet):
             for tag in tags:
-                if tag in name_set.tags():
-                    return False
-            return True
+                for temp in l_name_set.templates_as_list:
+                    if tag in temp.tags:
+                        templates.remove(temp)
 
+            if len(templates) > 0:
+                return True
+            else:
+                return False
         if tags is not None:
-            namesets = list(filter(_contains, list(self.name_sets.values())))
+            namesets = list(filter(_contains, self.name_sets_as_list))
         else:
             namesets = list(self.name_sets.values())
 
         return self._random.choice(namesets)
+
 
 

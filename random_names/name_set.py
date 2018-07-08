@@ -25,6 +25,27 @@ class NameSet:
         for temp in self._name_set['templates']:
             self.templates[temp['name']] = NameTemplate(**temp)
 
+    @property
+    def name_lists_as_list(self):
+        return list(self.name_lists.values())
+
+    @property
+    def templates_as_list(self):
+        return list(self.templates.values())
+
+    def filter_templates(self, tags):
+        if tags is None:
+            return self.templates_as_list
+
+        templates = self.templates_as_list
+
+        for tag in tags:
+            for temp in self.templates_as_list:
+                if tag in temp.tags:
+                    templates.remove(temp)
+
+        return templates
+
     def tags(self):
         result = set()
         for template in self.templates:

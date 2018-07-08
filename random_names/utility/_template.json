@@ -1,0 +1,30 @@
+{
+  "id": "_template",
+  "name": "",
+  "templates": [
+    {
+      "name": "",
+      "weight": 1,
+      "tags": [],
+      "content": "",
+
+    }
+  ],
+
+  "name_lists":
+  [
+    {
+      "name": "",
+      "names": [],
+      "tag": "",
+      "use_markov": true,
+      "markov_properties": {
+        "order": 3,
+        "length": [
+          4,
+          12
+        ]
+      }
+    }
+  ]
+}
