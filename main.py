@@ -26,3 +26,8 @@ if __name__ == '__main__':
     print('@@@ NO MALE NAMES @@@')
     for _ in range(10):
         print(generator.generate(tags=['male']))
+
+    print('############ River Names ################')
+    for _ in range(10):
+        print(generator.generate(nameset_id='river_names'))
+
