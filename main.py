@@ -31,3 +31,7 @@ if __name__ == '__main__':
     for _ in range(10):
         print(generator.generate(nameset_id='river_names'))
 
+    print('############ Deity Names ################')
+    for _ in range(10):
+        print(generator.generate(template_name='mesopotamian_deity_name'))
+

@@ -6,8 +6,7 @@
       "name": "",
       "weight": 1,
       "tags": [],
-      "content": "",
-
+      "content": ""
     }
   ],
 
@@ -17,6 +16,7 @@
       "name": "",
       "names": [],
       "tag": "",
+      "weight": 10,
       "use_markov": true,
       "markov_properties": {
         "order": 3,

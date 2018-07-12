@@ -1,0 +1,95 @@
+{
+  "id": "deity_names",
+  "name": "Deity Names",
+  "templates": [
+    {
+      "name": "mesopotamian_deity_name",
+      "weight": 10,
+      "tags": ["sumerian", "akkadian"],
+      "content": "<deity_names:mesopotamian_deity_names>"
+    }
+  ],
+
+  "name_lists":
+  [
+    {
+      "name": "Mesopotamian Deities",
+      "names": [
+        "An",
+        "Anu",
+        "Aya",
+        "Anšar",
+        "Kišar",
+        "Asalluhi",
+        "Šerida",
+        "Baba",
+        "Bawu",
+        "Bau",
+        "Dagan",
+        "Damu",
+        "Enki",
+        "Ea",
+        "Enlil",
+        "Ellil",
+        "Ereškigal",
+        "Erra",
+        "Geštinanna",
+        "Belet-ṣeri",
+        "Girra",
+        "Gula",
+        "Ninkarrak",
+        "Haya",
+        "Inana",
+        "Ištar",
+        "Iškur",
+        "Adad",
+        "Ištaran",
+        "Lugalirra",
+        "Meslamtaea",
+        "Marduk",
+        "Ninmah",
+        "Nintud",
+        "Nintur",
+        "Belet-ili",
+        "Nabu",
+        "Namma",
+        "Nanna",
+        "Suen",
+        "Sin",
+        "Nergal",
+        "Nidaba",
+        "Ninazu",
+        "Ningišzida",
+        "Ninisinna",
+        "Ninlil",
+        "Mulliltu",
+        "Mullissu",
+        "Mylitta",
+        "Ninsi'anna",
+        "Ninsumun",
+        "Ninsun",
+        "Numušda",
+        "Nuska",
+        "Nusku",
+        "Pabilsag",
+        "Papsukkal",
+        "Šala",
+        "Tašmetu",
+        "Tiamat",
+        "Utu",
+        "Šamaš",
+        "Zababa"
+      ],
+      "tag": "mesopotamian_deity_names",
+      "weight": 10,
+      "use_markov": true,
+      "markov_properties": {
+        "order": 3,
+        "length": [
+          3,
+          10
+        ]
+      }
+    }
+  ]
+}

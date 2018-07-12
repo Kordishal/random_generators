@@ -2,7 +2,7 @@ import os
 import random
 
 from random_names.name_set import NameSet
-from random_names.exceptions import InvalidTemplateError
+from random_names.exceptions import UnknownNameList, UnknownNameSet, UnknownTemplate
 
 
 class NameGenerator(object):
@@ -43,12 +43,15 @@ class NameGenerator(object):
             if template is not None:
                 return template.expand(self.name_sets)
             else:
-                raise InvalidTemplateError('The template %s could not be found!' % template_name)
+                raise UnknownTemplate('The template %s could not be found!' % template_name)
 
         if nameset_id is None:
             name_set = self.select_name_set(tags)
         else:
-            name_set = self.name_sets[nameset_id]
+            try:
+                name_set = self.name_sets[nameset_id]
+            except KeyError:
+                raise UnknownNameSet('No name set with id %s was found!' % nameset_id)
 
         template = self._random.choice(name_set.filter_templates(tags))
         return template.expand(self.name_sets)

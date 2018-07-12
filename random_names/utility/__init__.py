@@ -1,4 +1,4 @@
-from random_names.exceptions import MissingIdError
+from random_names.exceptions import NoIdError
 import json
 
 
@@ -15,6 +15,6 @@ def read_name_set_file(file_name: str) -> dict:
         name_set = json.loads(content)
 
         if 'id' not in name_set:
-            raise MissingIdError('The name set in {} has no id.'.format(file_name))
+            raise NoIdError('The name set in {} has no id.'.format(file_name))
 
         return name_set

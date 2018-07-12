@@ -1,6 +1,7 @@
 import random
 import textwrap
 
+
 class NameList:
     """
 
