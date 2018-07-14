@@ -35,3 +35,10 @@ if __name__ == '__main__':
     for _ in range(10):
         print(generator.generate(template_name='mesopotamian_deity_name'))
 
+    for _ in range(10):
+        print(generator.generate(template_name='norse_male_deity_name'))
+
+    for _ in range(10):
+        print(generator.generate(template_name='norse_female_deity_name'))
+
+

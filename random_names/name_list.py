@@ -35,10 +35,11 @@ class NameList:
             wrapped = textwrap.wrap(name, order)
             starting_particles.append(wrapped[0])
             if len(wrapped) == 1:
+                # When a name is smaller or equal to order, append a STOP as next keyword.
                 if wrapped[0] in alphabet:
-                    alphabet[wrapped[0]].append(wrapped[0])
+                    alphabet[wrapped[0]].append('STOP')
                 else:
-                    alphabet[wrapped[0]] = [wrapped[0]]
+                    alphabet[wrapped[0]] = ['STOP']
             for i in range(len(wrapped) - 1):
                 if wrapped[i] in alphabet:
                     alphabet[wrapped[i]].append(wrapped[i + 1])
@@ -50,7 +51,9 @@ class NameList:
     def _get_name_from_markov(self):
         result = self._random.choice(self.starting_particles)
         next_part = self._random.choice(self.alphabet[result])
-        while len(result) <= self.markov_properties['length'][1]:
+        while len(result) < self.markov_properties['length'][1]:
+            if next_part == 'STOP':
+                break
             result += next_part
             if next_part in self.alphabet:
                 next_part = self._random.choice(self.alphabet[next_part])

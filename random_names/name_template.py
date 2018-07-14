@@ -1,3 +1,4 @@
+from random_names.exceptions import UnknownNameList
 import re
 
 
@@ -24,7 +25,10 @@ class NameTemplate(object):
         for match in matches:
             temp = match.strip('<>')
             nameset_id, namelist_id = temp.split(':')
-            name = name_sets[nameset_id].name_lists[namelist_id].get_name()
+            try:
+                name = name_sets[nameset_id].name_lists[namelist_id].get_name()
+            except KeyError:
+                raise UnknownNameList('The name list with tag {} could not be found!'.format(namelist_id))
             result = re.sub(match, name, result)
         return result
 

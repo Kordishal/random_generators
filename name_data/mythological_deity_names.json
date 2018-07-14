@@ -7,6 +7,18 @@
       "weight": 10,
       "tags": ["sumerian", "akkadian"],
       "content": "<deity_names:mesopotamian_deity_names>"
+    },
+    {
+      "name": "norse_male_deity_name",
+      "weight": 10,
+      "tags": ["old_norse"],
+      "content": "<deity_names:old_norse_male_deity_names>"
+    },
+    {
+      "name": "norse_female_deity_name",
+      "weight": 10,
+      "tags": ["old_norse"],
+      "content": "<deity_names:old_norse_female_deity_names>"
     }
   ],
 
@@ -84,10 +96,101 @@
       "weight": 10,
       "use_markov": true,
       "markov_properties": {
-        "order": 3,
+        "order": 2,
         "length": [
           3,
           10
+        ]
+      }
+    },
+    {
+      "name": "Old Norse Male Deities",
+      "names": [
+        "Baldr",
+        "Bragi",
+        "Dellingr",
+        "Forseti",
+        "Freyr",
+        "Yngvi",
+        "Heimdallr",
+        "Hermóðr",
+        "Höðr",
+        "Hœnir",
+        "Lóðurr",
+        "Loki",
+        "Móði",
+        "Magni",
+        "Máni",
+        "Mímir",
+        "Meili",
+        "Njörðr",
+        "Odin",
+        "Óðr",
+        "Þórr",
+        "Týr",
+        "Ullr",
+        "Váli",
+        "Viðarr",
+        "Vé",
+        "Vili"
+      ],
+      "tag": "old_norse_male_deity_names",
+      "weight": 10,
+      "use_markov": true,
+      "markov_properties": {
+        "order": 2,
+        "length": [
+          4,
+          12
+        ]
+      }
+    },
+    {
+      "name": "Old Norse Female Deities",
+      "names": [
+        "Bil",
+        "Beyla",
+        "Eir",
+        "Ēostre",
+        "Freyja",
+        "Frigg",
+        "Fulla",
+        "Gefjun",
+        "Gersemi",
+        "Gerðr",
+        "Gná",
+        "Gullveig",
+        "Hlín",
+        "Hnoss",
+        "Ilmr",
+        "Iðunn",
+        "Irpa",
+        "Lofn",
+        "Nanna",
+        "Njörun",
+        "Rán",
+        "Rindr",
+        "Sága",
+        "Sif",
+        "Sigyn",
+        "Sjöfn",
+        "Skaði",
+        "Snotra",
+        "Sól",
+        "Syn",
+        "Þrúðr",
+        "Þorgerðr Hölgabrúðr",
+        "Vár",
+        "Vör"
+      ],
+      "tag": "old_norse_female_deity_names",
+      "weight": 10,
+      "use_markov": true,
+      "markov_properties": {
+        "order": 2,
+        "length": [
+          4,
+          12
         ]
       }
     }
