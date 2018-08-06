@@ -1,8 +1,8 @@
 import os
 import random
 
-from random_names.name_set import NameSet
-from random_names.exceptions import UnknownNameList, UnknownNameSet, UnknownTemplate
+from procedural_generators.names.name_set import NameSet
+from procedural_generators.names.exceptions import UnknownNameSet, UnknownTemplate
 
 
 class NameGenerator(object):
@@ -12,7 +12,7 @@ class NameGenerator(object):
     :param seed:
     """
 
-    def __init__(self, data_folder='name_data/', seed=102932):
+    def __init__(self, data_folder, seed=102932):
         self._random = random.Random(seed)
         self.name_sets = dict()
         for root, dirs, files in os.walk(data_folder):

@@ -1,4 +1,4 @@
-from random_names.exceptions import UnknownNameList
+from procedural_generators.names.exceptions import UnknownNameList
 import re
 
 

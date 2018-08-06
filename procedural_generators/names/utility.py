@@ -3,7 +3,7 @@ import json
 import re
 
 
-class NameSetUtility:
+class NameSetEditor(object):
 
     def __init__(self):
         self.name_sets = list()
@@ -121,7 +121,7 @@ class NameSetUtility:
 
 
 if __name__ == '__main__':
-    utility = NameSetUtility()
+    utility = NameSetEditor()
     # utility.change_tag('area_names', 'areas')
     # utility.add_tag('use_markov', 'name_list', True)
     # utility.remove_tag('markovproperties')

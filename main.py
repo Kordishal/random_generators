@@ -1,10 +1,10 @@
-from random_names import NameGenerator
+from procedural_generators import NameGenerator
 import random
 
 
 if __name__ == '__main__':
 
-    generator = NameGenerator(seed=82139)
+    generator = NameGenerator('procedural_generators/data/name_sets/', seed=82139)
 
     ids = generator.name_set_ids()
     print(list(ids))

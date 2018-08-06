@@ -1,0 +1,1 @@
+from procedural_generators.names import NameGenerator

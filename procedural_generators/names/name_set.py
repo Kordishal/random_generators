@@ -1,6 +1,5 @@
-from random_names.name_list import NameList
-from random_names.name_template import NameTemplate
-from random_names.utility import read_name_set_file
+from procedural_generators.names.name_list import NameList
+from procedural_generators.names.name_template import NameTemplate
 import random
 import json
 
@@ -11,18 +10,20 @@ class NameSet:
     def __init__(self, file_name: str, seed: int):
         self._random = random.Random(8731 + seed)
         self._file_name = file_name
-        self._name_set = read_name_set_file(file_name)
+        fp = open(file_name)
+        name_set = json.load(fp)
+        fp.close()
 
-        self.id = self._name_set['id']
-        self.name = self._name_set['name']
+        self.id = name_set['id']
+        self.name = name_set['name']
 
         self.name_lists = dict()
-        for nl in self._name_set['name_lists']:
+        for nl in name_set['name_lists']:
             seed += 1
             self.name_lists[nl['tag']] = NameList(seed, **nl)
 
         self.templates = dict()
-        for temp in self._name_set['templates']:
+        for temp in name_set['templates']:
             self.templates[temp['name']] = NameTemplate(**temp)
 
     @property
