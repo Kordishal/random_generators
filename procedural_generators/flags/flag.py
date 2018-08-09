@@ -1,5 +1,6 @@
 from PIL.Image import Image
 
+
 class Flag(object):
 
     def __init__(self, file_name):
@@ -7,7 +8,6 @@ class Flag(object):
         self.image.resize((128, 256))
 
         self._file_name = file_name
-
 
     def save(self):
         self.image.save(open(self._file_name))
